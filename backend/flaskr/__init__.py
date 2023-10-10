@@ -3,6 +3,7 @@ from flask_cors import CORS
 from models import setup_db, Book, db
 
 BOOKS_PER_SHELF = 8
+page = request.args.get("page", 1, type=int)
 
 
 # @TODO: General Instructions
@@ -16,7 +17,7 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
     setup_db(app)
-    CORS(app)# resources={r'*/api/*':{'origins':'*'}})
+    CORS(app)
     app.app_context().push()
 
    # CORS Headers
@@ -37,7 +38,7 @@ def create_app(test_config=None):
     #       Your new book should show up immediately after you submit it at the end of the page.
     @app.route("/books", methods=["POST"])
     def create_book():
-        page = request.args.get("page", 1, type=int)
+        
 
         new_title = request.get_json()["title"]
         new_author = request.get_json()["author"]
@@ -46,7 +47,7 @@ def create_app(test_config=None):
         if request.method == "POST":
             book = Book(title=new_title, author=new_author, rating=new_rating)
             book.insert()
-            current_books = Book.query.order_by(Book.id).paginate(page=page, per_page=BOOKS_PER_SHELF)
+            current_books = Book.query.order_by(Book.id).paginate(page=page, per_page=BOOKS_PER_SHELF, error_out=False)
             return jsonify({
                 "success": True,
                 "created": book.id,
@@ -72,7 +73,6 @@ def create_app(test_config=None):
     def get_books():
         error = False
         try:
-            page = request.args.get("page", 1, type=int)
             current_books = Book.query.order_by(Book.id).paginate(page=page, per_page=BOOKS_PER_SHELF, error_out=False)
             if current_books is None:
                 abort(404)
@@ -87,7 +87,6 @@ def create_app(test_config=None):
            db.sessio.rollback()
            if error:
                abort(404)
-        
         finally:
             db.session.close()
             
