@@ -3,7 +3,6 @@ from flask_cors import CORS
 from models import setup_db, Book, db
 
 BOOKS_PER_SHELF = 8
-page = request.args.get("page", 1, type=int)
 
 
 # @TODO: General Instructions
@@ -38,8 +37,7 @@ def create_app(test_config=None):
     #       Your new book should show up immediately after you submit it at the end of the page.
     @app.route("/books", methods=["POST"])
     def create_book():
-        
-
+        page = request.args.get("page", 1, type=int)
         new_title = request.get_json()["title"]
         new_author = request.get_json()["author"]
         new_rating = request.get_json()["rating"]
@@ -71,6 +69,7 @@ def create_app(test_config=None):
     @app.route("/books")
     @app.route("/")
     def get_books():
+        page = request.args.get("page", 1, type=int)
         error = False
         try:
             current_books = Book.query.order_by(Book.id).paginate(page=page, per_page=BOOKS_PER_SHELF, error_out=False)
