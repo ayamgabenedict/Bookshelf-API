@@ -1,164 +1,254 @@
-## Local Development
+# API Development and Documentation Final Project
 
-The instructions below are meant for the local setup only. The classroom workspace is already set for your to start practicing.
+## Bookshelf API App
 
-#### Pre-requisites
+The Bookshelf API app displays some cool novels you should check out if you haven't read them yet. It allows users to see all the books in the bookshelf paginated by **eight**. Users can add new books, edit the a book's ratings and/ or delete an existing books.
 
-- Developers using this project should already have Python3, pip and node installed on their local machines.
+**Home Page**
+![homepage](/homepage.png)
 
-- **Start your virtual environment**
-  From the backend folder run
+## What can you do with this App?
+
+The Bookshelf API app has the following functionalities. It allows users to:
+
+1. View all books; eight books per page. Books should show the title of the book, author of the book, ratings and trash can to delete a book entry.
+2. Delete books.
+3. Add new book and require that they include title, author and ratings.
+4. Update an existing book's ratings
+
+# Getting Started
+
+### The Frontend
+
+The [frontend](./frontend) directory contains a complete React frontend to consume the data from the Flask server.
+
+> _tip_: this frontend is designed to work with [Flask-based Backend](../backend) so it will not load successfully if the backend is not working or not connected. It is advisable to **stand up the backend first**, you can then test using Postman or curl.
+
+#### Installing Dependencies
+
+1. **Installing Node and NPM**
+   This project depends on Nodejs and Node Package Manager (NPM). Before continuing, you must download and install Node (the download includes NPM) from [https://nodejs.com/en/download](https://nodejs.org/en/download/).
+
+2. **Installing project dependencies**
+   This project uses NPM to manage software dependencies. NPM Relies on the package.json file located in the `frontend` directory of this repository. After cloning, open your terminal and run:
 
 ```bash
-# Mac users
-python3 -m venv venv
-source venv/bin/activate
-# Windows users
-> py -3 -m venv venv
-> venv\Scripts\activate
+npm install
 ```
 
-- **Install dependencies**<br>
-  From the backend folder run
+> _tip_: `npm i`is shorthand for `npm install``
+
+## Required Tasks
+
+### Running Your Frontend in Dev Mode
+
+The frontend app was built using create-react-app. In order to run the app in development mode use `npm start`.
+
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser. The page will reload if you make edits.
 
 ```bash
-# All required packages are included in the requirements file.
-pip3 install -r requirements.txt
-# In addition, you will need to UNINSTALL the following:
-pip3 uninstall flask-socketio -y
+npm start
 ```
 
-### Step 0: Start/Stop the PostgreSQL server
+### The Backend
 
-Mac users can follow the commands below:
+The [backend](./backend) directory contains a complete Flask App, running on the Flask server.
+
+#### Installing Dependencies
+
+1.  **Python 3.7**
+
+    Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
+
+2.  **Virtual Enviornment**
+
+    We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+
+3.  **PIP Dependencies**
+
+    Once you have your virtual environment setup and running, install dependencies by navigating to the `/backend` directory and running:
 
 ```bash
-which postgres
-postgres --version
-# Start/stop
-pg_ctl -D /usr/local/var/postgres start
-pg_ctl -D /usr/local/var/postgres stop
+pip install -r requirements.txt
 ```
 
-Windows users can follow the commands below:
+This will install all of the required packages necessary for your Flask App.
 
-- Find the database directory, it should be something like that: _C:\Program Files\PostgreSQL\13.2\data_
-- Then, in the command line, execute the folllowing command:
+##### Key Dependencies
 
-```bash
-# Start the server
-pg_ctl -D "C:\Program Files\PostgreSQL\15\data" start
-# Stop the server
-pg_ctl -D "C:\Program Files\PostgreSQL\15\data" stop
-```
+- [Flask](http://flask.pocoo.org/) is a lightweight backend microservices framework. Flask is required to handle requests and responses.
 
-If it shows that the _port already occupied_ error, run:
+- [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM we'll use to handle our PostgreSQL database.
 
-```bash
-sudo su -
-ps -ef | grep postmaster | awk '{print $2}'
-kill <PID>
-```
+- [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/#) is the extension we'll use to handle cross origin requests from our frontend server.
 
-### Step 1 - Create and Populate the database
+## Database Setup
 
-1. **Verify the database username**<br>
-   Verify that the database user in the `/backend/books.psql`, `/backend/models.py`, and `/backend/test_flaskr.py` files must be either the `student` or `postgres` (default username). FYI, the classroom workspace uses the `student`/`student` user credentials, whereas, the local implementation can use the dafault `postgres` user without a password as well. (See the `/backend/setup.sql` for more details!)
-
-2. **Create the database and a user**<br>
-   Two approaches:
-
-   1. In your terminal, navigate to the _/ nd0044-c2-API-Development-and-Documentation-exercises/1_Requests_Starter/backend/_ directory, and run the following:
-
-   ```bash
-   # Connect to the PostgreSQL
-   psql postgres
-   #View all databases
-   \l
-   # Create the database, create a user - `student`, grant all privileges to the student
-   \i setup.sql
-
-   # Exit the PostgreSQL prompt
-   \q
-   ```
-
-   2. Run the **psql** shell and enter the necessary credentials to connect to postgres, then:
-
-   ```bash
-   #View all databases
-   \l
-   # Create the database, create a user - `student`, grant all privileges to the student
-   \i C:/Owner/Lenove/nd0044_c2_API_Development_and_Documentation_exercises/1_Requests_Starter/backend/1_Requests_Starter/backend/setup.sql
-   # Exit the PostgreSQL prompt
-   \q
-   ```
-
-3. **Create tables**<br>
-   Once your database is created, you can create tables (`bookshelf`) and apply contraints
+With Postgres running and from the `backend` directory, run the following in the terminal in order to restore the database:
 
 ```bash
-# Mac users
-psql -f books.psql -U student -d bookshelf
-# Linux users
-su - postgres bash -c "psql bookshelf < /path/to/exercise/backend/books.psql"
-# Windows users
 psql bookshelf < books.psql
-
 ```
 
-**You can even drop the database and repopulate it, if needed, using the commands above.**
+## Running the backend server
 
-### Step 2: Complete the ToDos and Start the backend server
+Ensure you are working in your virtual environment.
+Navigate to your `backend` directory, open terminal and run the server by executing the commands:
 
-Navigate to the `/backend/flaskr/__init__.py` file, and finish all the `@TODO` thereby building out the necessary routes and logic to get the backend of your app up and running.
-
-Once you've written your code, start your (backend) Flask server by running the command below from the `/backend/` directory.
-
-```
+```bash
 export FLASK_APP=flaskr
 export FLASK_ENV=development
 flask run
 ```
 
-Windows users can follow the commands below:
+For windows, run this instead:
 
-```
+```bash
 set FLASK_APP=flaskr
 set FLASK_ENV=development
 flask run
 ```
 
-These commands put the application in development and directs our application to use the `__init__.py` file in our flaskr folder. Working in development mode shows an interactive debugger in the console and restarts the server whenever changes are made. If running locally on Windows, look for the commands in the [Flask documentation](http://flask.pocoo.org/docs/1.0/tutorial/factory/).
+Setting the `FLASK_ENV` variable to `development` will detect file changes and restart the server automatically.
 
-The application will run on `http://127.0.0.1:5000/` by default and is set as a proxy in the frontend configuration. Also, the current version of the application does not require authentication or API keys.
+Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application.
 
-### Step 3: Start the frontend
+## Tasks
 
-(You can start the frontend even before the backend is up!)
-From the `frontend` folder, run the following commands to start the client:
+| No  | Completed | Task Description                                                                                                                                                  |
+| :-- | :-------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.  |  **[x]**  | Use Flask-CORS to enable cross-domain requests and set response headers.                                                                                          |
+| 2.  |  **[x]**  | Create an endpoint to handle GET requests for books, including pagination (every 8 books). This endpoint should return a list of books and total number of books. |
+| 3.  |  **[x]**  | Create an endpoint to DELETE a book using the book ID.                                                                                                            |
+| 4.  |  **[x]**  | Create an endpoint to POST a new book, which will require the title, author and book ratings.                                                                     |
+| 5.  |  **[x]**  | Create an endpoint to update an existing book's ratings. Method could be POST or PATCH.                                                                           |
+| 6.  |  **[x]**  | Create error handlers for all expected errors including 400, 404, 422 and 500.                                                                                    |
+|     |
+
+## API
+
+GET `/books`
+Fetches a paginated dictionary of all available books
+
+- _Request parameters (optional):_ page:int
+- _Example response:_
+
+```{
+    "books": [
+        {
+            "author": "Ola Rotimi",
+            "id": 55,
+            "rating": 3,
+            "title": "The gods are not to blame"
+        },
+        {
+            "author": "Dan Brown",
+            "id": 58,
+            "rating": 5,
+            "title": "Deception Point"
+        }
+    ],
+    "success": true,
+    "total_books": 20
+}
+```
+
+DELETE `/books/<book_id>`
+Delete an existing book from the repository of available books.
+
+- _Request arguments:_ book_id:int
+- _Example response:_
 
 ```
-npm install // only once to install dependencies
-npm start
+{
+    "books_remaining": [
+        {
+            "author": "Kristin Hannah",
+            "id": 3,
+            "rating": 4,
+            "title": "The Great Alone"
+        },
+        {
+            "author": "Dan Brown",
+            "id": 56,
+            "rating": 3,
+            "title": "Da Vinci's Code"
+        },
+    ],
+    "deleted_book_id": 58,
+    "success": true,
+    "total_books_remaining": 19
+}
 ```
 
-By default, the frontend will run on `localhost:3000`. Close the terminal if you wish to stop the frontend server.
+POST `/books`
+Add a new book to the repository of available books
 
----
+- _Request body:_ {id:int, title:string, author:string, rating:int}
+- _Example response:_
 
-## Additional information
-
-#### Running Tests
-
-If any exercise needs testing, navigate to the `/backend` folder and run the following commands:
-
-```bash
-psql postgres
-dropdb bookshelf_test
-createdb bookshelf_test
-\q
-psql bookshelf_test < books.psql
-python test_flaskr.py
+```
+{
+    "books": [
+        {
+            "author": "Stephen King",
+            "id": 1,
+            "rating": 5,
+            "title": "The Outsider: A Novel"
+        },
+        {
+            "author": "Madeline Miller",
+            "id": 8,
+            "rating": 5,
+            "title": "CIRCE"
+        }
+    ],
+    "created": 62,
+    "success": true,
+    "total_books": 20
+}
 ```
 
-createdb example
+POST `/books/<book_id>`
+Updates an existing book's ratings.
+
+- _Request body:_ book_id:int
+- _Example response:_
+
+```
+{
+    "book_id": 1,
+    "success": true,
+    "updated_rating": 1
+}
+```
+
+## License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Author
+
+- [Benedict Ayamga](https://github.com/ayamgabenedict)
+
+## Acknowledgements
+
+- [Udacity](https://www.udacity.com/) The project was developed as a part of Udacity's Full Stack Nanodegree Program.
+
+## Screenshots
+
+**Add book**
+
+![add_book](add_1.png)
+
+![add_book2](add_2.png)
+
+**Update a book**
+![update_book1](before_update.png)
+
+![update_book2](after_update.png)
+
+**Delete a book**
+![delete_book1](delete_1.png)
+![delete_book2](delete_2.png)
+![delete_book3](delete_3.png)
