@@ -98,10 +98,10 @@ def create_app(test_config=None):
         else: 
             return jsonify({
                 "success": True,
-                "book_id": book.id,
-                "book_title":book.title,
-                "book_rating":book.rating,
-                "book_author":book.author
+                "id": book.id,
+                "title":book.title,
+                "rating":book.rating,
+                "author":book.author
             })
         
         
@@ -131,7 +131,6 @@ def create_app(test_config=None):
     #        Response body keys: 'success', 'deleted'(id of deleted book), 'books' and 'total_books'
     #        Response body keys: 'success', 'books' and 'total_books'
     @app.route('/books/<int:book_id>', methods=['DELETE'])
-    #@copy_current_request_context
     def delete_book(book_id):
         try:
             book = Book.query.filter(Book.id == book_id).one_or_none()
@@ -197,7 +196,7 @@ def create_app(test_config=None):
             'success': False,
             'error_code': 500,
             'error_message':'Internal server error'
-        }), 422)
+        }), 500)
 
     return app
     

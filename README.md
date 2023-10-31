@@ -2,7 +2,7 @@
 
 ## Bookshelf API App
 
-The Bookshelf API app displays some cool novels you should check out if you haven't read them yet. It allows users to see all the books in the bookshelf paginated by **eight**. Users can add new books, edit the a book's ratings and/ or delete an existing books.
+The Bookshelf API app displays some cool novels you should check out if you haven't read them yet. It allows users to see all the books in the bookshelf paginated by **EIGHT**. Users can add new books, edit a book's ratings and/ or delete existing book(s).
 
 **Home Page**
 ![homepage](/homepage.png)
@@ -36,7 +36,7 @@ The [frontend](./frontend) directory contains a complete React frontend to consu
 npm install
 ```
 
-> _tip_: `npm i`is shorthand for `npm install``
+> _tip_: `npm i` is shorthand for `npm install``
 
 ## Required Tasks
 
@@ -123,7 +123,7 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 | 4.  |  **[x]**  | Create an endpoint to POST a new book, which will require the title, author and book ratings.                                                                     |
 | 5.  |  **[x]**  | Create an endpoint to update an existing book's ratings. Method could be POST or PATCH.                                                                           |
 | 6.  |  **[x]**  | Create error handlers for all expected errors including 400, 404, 422 and 500.                                                                                    |
-|     |
+| 7.  |  **[x]**  | Write at least one test for each test for successful operation and for expected errors.                                                                           |
 
 ## API
 
@@ -221,6 +221,17 @@ Updates an existing book's ratings.
     "success": true,
     "updated_rating": 1
 }
+```
+
+## Testing
+
+To run the tests, run
+
+```
+dropdb bookshelf_test
+createdb bookshelf_test
+psql bookshelf_test < books.psql
+python test_books_api.py
 ```
 
 ## License
